@@ -8,12 +8,13 @@ import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firesto
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap'
 import 'rxjs/add/observable/of'
+import { LocalStorageService } from 'angular-2-local-storage';
 
 interface User {
   uid: string;
   email: string;
-  photoURL?: string;
-  displayName?: string;
+  photoURL: string;
+  displayName: string;
 }
 
 
@@ -24,14 +25,16 @@ export class AuthService {
 
   constructor(private afAuth: AngularFireAuth,
               private afs: AngularFirestore,
-              private router: Router) {
+              private router: Router,private localstorge: LocalStorageService) {
 
       //// Get auth data, then get firestore user document || null
       this.user = this.afAuth.authState
         .switchMap(user => {
           if (user) {
+            this.localstorge.set("isLoggedIn", true);
             return this.afs.doc<User>(`users/${user.uid}`).valueChanges()
           } else {
+            this.localstorge.set("isLoggedIn", false);
             return Observable.of(null)
           }
         })
@@ -51,6 +54,7 @@ export class AuthService {
     return this.afAuth.auth.signInWithPopup(provider)
       .then((credential) => {
         this.updateUserData(credential.user)
+        this.router.navigate(['dashboard'])
       })
   }
 
@@ -58,6 +62,7 @@ export class AuthService {
     return this.afAuth.auth.signInWithPopup(provider)
       .then((credential) => {
         this.updateUserData(credential.user)
+        this.router.navigate(['dashboard'])
       })
   }
 
@@ -73,9 +78,9 @@ export class AuthService {
     return userRef.set(data, { merge: true })
   }
 
-
   signOut() {
     this.afAuth.auth.signOut().then(() => {
+        this.localstorge.set("isLoggedIn", false);
         this.router.navigate(['/']);
     });
   }
