@@ -1,3 +1,9 @@
-<p>
-  idea-feed works!
-</p>
+<ul class="list">
+  <cdk-virtual-scroll-viewport itemSize="5" style="height: 500px">
+    <div *cdkVirtualFor="let idea of ideas">
+      <li class="list-item">
+        {{ idea.idea_name }} {{ idea.description }} {{ idea.tags }} {{ idea.require_assistance }}
+      </li>
+    </div>
+  </cdk-virtual-scroll-viewport>
+</ul>
