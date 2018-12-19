@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ProfileService } from '@app/core/profile/profile.service';
+import { Router } from '@angular/router';
+import { finalize } from 'rxjs/internal/operators/finalize';
 
 @Component({
   selector: 'app-details',
@@ -6,7 +9,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit {
-  constructor() {}
+  constructor(private profileService: ProfileService, private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.profileService
+      .getUserDetails('vp')
+      .pipe(finalize(() => {}))
+      .subscribe(
+        (data: any) => {
+          console.log(data);
+          if (data.length === 0) {
+            this.router.navigate(['404']);
+          }
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+  }
 }
