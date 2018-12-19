@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
 import { ProfileService } from '@app/core/profile/profile.service';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/internal/operators/finalize';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
-  styleUrls: ['./details.component.scss']
+  styleUrls: ['./details.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DetailsComponent implements OnInit {
   constructor(private profileService: ProfileService, private router: Router) {}
