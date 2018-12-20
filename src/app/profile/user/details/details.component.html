@@ -86,8 +86,8 @@
                       <mat-icon class="detail-block__icon">cake</mat-icon> {{ user.birth_date | date: 'longDate' }}
                     </div>
 
-                    <div class="detail-block social-links">
-                      <a href="#">
+                    <div class="detail-block social-links" *ngIf="user?.social_links">
+                      <a [href]="(user?.social_links)[0]" target="_blank">
                         <img
                           matTooltip="@joglekaraayush"
                           class="social-icon"
@@ -95,7 +95,7 @@
                         />
                       </a>
 
-                      <a href="#">
+                      <a [href]="(user?.social_links)[1]" target="_blank">
                         <img
                           matTooltip="@zerefwayne"
                           class="social-icon"
@@ -103,7 +103,7 @@
                         />
                       </a>
 
-                      <a href="#">
+                      <a [href]="(user?.social_links)[2]" target="_blank">
                         <img
                           matTooltip="@zerefwayne"
                           class="social-icon"
@@ -128,8 +128,8 @@
             <mat-icon class="detail-block__icon">cake</mat-icon> {{ user.birth_date | date: 'longDate' }}
           </div>
 
-          <div class="detail-block social-links">
-            <a href="#">
+          <div class="detail-block social-links" *ngIf="user?.social_links">
+            <a [href]="(user?.social_links)[0]" target="_blank">
               <img
                 matTooltip="@joglekaraayush"
                 class="social-icon"
@@ -137,7 +137,7 @@
               />
             </a>
 
-            <a href="#">
+            <a [href]="(user?.social_links)[1]" target="_blank">
               <img
                 matTooltip="@zerefwayne"
                 class="social-icon"
@@ -145,7 +145,7 @@
               />
             </a>
 
-            <a href="#">
+            <a [href]="(user?.social_links)[2]" target="_blank">
               <img matTooltip="@zerefwayne" class="social-icon" src="../../../../assets/logos/social/github-logo.svg" />
             </a>
           </div>
