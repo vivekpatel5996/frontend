@@ -11,7 +11,6 @@
         </div>
       </div>
     </div>
-
     <div class="user-container">
       <div class="multi-tab-details">
         <div class="v-desktop">
@@ -19,12 +18,22 @@
             <mat-tab label="Details">
               <ng-template matTabContent>
                 <div class="tab-text">
-                  <div class="block">
+                  <div
+                    class="block"
+                    *ngIf="username == loggedInUsername || (username != loggedInUsername && user?.bio !== null)"
+                  >
                     <h4 class="title">About Me</h4>
-                    <p class="paragraph">{{ user.bio }}</p>
+                    <p *ngIf="showBio && user?.bio !== null" class="paragraph">{{ user.bio }}</p>
+                    <div *ngIf="username == loggedInUsername">
+                      <app-edit-field
+                        [fieldValue]="user?.bio"
+                        (showFieldEmitter)="showBio = false"
+                        (fieldValueEmitter)="updateBioValue($event)"
+                        [username]="user.username"
+                      ></app-edit-field>
+                    </div>
                   </div>
-
-                  <div class="block">
+                  <div class="block" *ngIf="user?.technologies !== null || user?.technologies?.length !== 0">
                     <h4 class="title">I am pretty good at</h4>
                     <div class="tech-stack">
                       <div class="tech-stack__item" *ngFor="let tech of user.technologies">{{ tech }}</div>
@@ -49,12 +58,12 @@
             <mat-tab label="Details">
               <ng-template matTabContent>
                 <div class="tab-text">
-                  <div class="block">
+                  <div class="block" *ngIf="user?.bio !== null">
                     <h4 class="title">About Me</h4>
                     <p class="paragraph">{{ user.bio }}</p>
                   </div>
 
-                  <div class="block">
+                  <div class="block" *ngIf="user?.technologies !== null || user?.technologies?.length !== 0">
                     <h4 class="title">I am pretty good at</h4>
                     <div class="tech-stack">
                       <div class="tech-stack__item" *ngFor="let tech of user.technologies">{{ tech }}</div>
@@ -86,28 +95,15 @@
                       <mat-icon class="detail-block__icon">cake</mat-icon> {{ user.birth_date | date: 'longDate' }}
                     </div>
 
-                    <div class="detail-block social-links" *ngIf="user?.social_links">
-                      <a [href]="(user?.social_links)[0]" target="_blank">
+                    <div
+                      class="detail-block social-links"
+                      *ngIf="user?.social_links !== null || user?.social_links?.length !== 0"
+                    >
+                      <a *ngFor="let sociallink of sociallinks" [href]="sociallink.socialLink" target="_blank">
                         <img
-                          matTooltip="@joglekaraayush"
+                          matTooltip="@{{ sociallink.username }}"
                           class="social-icon"
-                          src="../../../../assets/logos/social/facebook-logo.svg"
-                        />
-                      </a>
-
-                      <a [href]="(user?.social_links)[1]" target="_blank">
-                        <img
-                          matTooltip="@zerefwayne"
-                          class="social-icon"
-                          src="../../../../assets/logos/social/twitter-logo.svg"
-                        />
-                      </a>
-
-                      <a [href]="(user?.social_links)[2]" target="_blank">
-                        <img
-                          matTooltip="@zerefwayne"
-                          class="social-icon"
-                          src="../../../../assets/logos/social/github-logo.svg"
+                          src="{{ sociallink.logoUrl }}"
                         />
                       </a>
                     </div>
@@ -129,24 +125,8 @@
           </div>
 
           <div class="detail-block social-links" *ngIf="user?.social_links">
-            <a [href]="(user?.social_links)[0]" target="_blank">
-              <img
-                matTooltip="@joglekaraayush"
-                class="social-icon"
-                src="../../../../assets/logos/social/facebook-logo.svg"
-              />
-            </a>
-
-            <a [href]="(user?.social_links)[1]" target="_blank">
-              <img
-                matTooltip="@zerefwayne"
-                class="social-icon"
-                src="../../../../assets/logos/social/twitter-logo.svg"
-              />
-            </a>
-
-            <a [href]="(user?.social_links)[2]" target="_blank">
-              <img matTooltip="@zerefwayne" class="social-icon" src="../../../../assets/logos/social/github-logo.svg" />
+            <a *ngFor="let sociallink of sociallinks" [href]="sociallink.socialLink" target="_blank">
+              <img matTooltip="@{{ sociallink.username }}" class="social-icon" src="{{ sociallink.logoUrl }}" />
             </a>
           </div>
         </div>

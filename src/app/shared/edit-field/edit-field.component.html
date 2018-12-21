@@ -1,0 +1,3 @@
+<mat-icon *ngIf="!showField" (click)="editClicked()">edit </mat-icon>
+<textarea *ngIf="showField" [(ngModel)]="fieldValue"></textarea>
+<button mat-stroked-button *ngIf="showField" (click)="saveFieldValue()" color="primary">Save</button>
